@@ -3,9 +3,9 @@
 #define IKFAST_NO_MAIN
 
 #define IK_VERSION 61
-#include "output_ikfast61.cpp"
+//#include "ikfast_ur3.cpp"
 //#include "abb_irb2400_manipulator_ikfast_solver.cpp"
-//#include "ur5_ikfast.cpp"
+#include "ikfast_ur3_finger.cpp"
 
 
 #include <stdio.h>

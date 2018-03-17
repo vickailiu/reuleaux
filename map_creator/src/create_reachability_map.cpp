@@ -145,6 +145,8 @@ int main(int argc, char **argv)
       }
     }
 
+    ROS_INFO("Total number of poses: %lu", pose_col.size());
+
     // Every pose is checked for IK solutions. The reachable poses and the their corresponsing joint solutions are
     // stored. Only the First joint solution is stored. We may need this solutions in the future. Otherwise we can show
     // the robot dancing with the joint solutions in a parallel thread
@@ -169,7 +171,6 @@ int main(int argc, char **argv)
       }
     }
 
-    ROS_INFO("Total number of poses: %lu", pose_col.size());
     ROS_INFO("Total number of reachable poses: %lu", pose_col_filter.size());
 
     // The centers of reachable spheres are stored in a map. This data will be utilized in visualizing the spheres in

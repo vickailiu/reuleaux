@@ -58,7 +58,7 @@ octomap::OcTree* SphereDiscretization::generateBoxTree(const octomap::point3d& o
   {
     for (float y = origin.y() - diameter * 1.5; y <= origin.y() + diameter * 1.5; y += resolution)
     {
-      for (float z = origin.z() - diameter * 1.5; z <= origin.z() + diameter * 1.5; z += resolution)
+      for (float z = origin.z(); z <= origin.z() + diameter * 1.5; z += resolution)
       {
         // tree ->insertRay(origin, point3d(x,y,z));
         octomap::point3d point;
@@ -94,8 +94,9 @@ octomap::Pointcloud SphereDiscretization::make_sphere_points(const octomap::poin
 
 void SphereDiscretization::make_sphere_poses(const octomap::point3d& origin, double r, std::vector< geometry_msgs::Pose >& pose_Col)
 {
-  const double DELTA = M_PI / 5.;
-  const unsigned MAX_INDEX = (2 * 5 * 5);
+  const double DELTA_A = M_PI / 2.;
+  const double DELTA_E = M_PI / 6.;
+  const unsigned MAX_INDEX = 5;//(2 * 5 * 5);
   static std::vector<geometry_msgs::Vector3> position_vector(MAX_INDEX);
   static std::vector<tf2::Quaternion> quaternion(MAX_INDEX);
   static bool initialized = false;
@@ -103,9 +104,9 @@ void SphereDiscretization::make_sphere_poses(const octomap::point3d& origin, dou
   if( !initialized ){
     initialized=true;
     unsigned index = 0;
-    for (double phi = 0; phi < 2*M_PI; phi += DELTA)  // Azimuth [0, 2PI]
+    for (double phi = 0; phi < 2*M_PI; phi += DELTA_A)  // Azimuth [0, 2PI]
     {
-      for (double theta = 0; theta < M_PI; theta += DELTA)  // Elevation [0, PI]
+      for (double theta = M_PI - DELTA_E; theta < M_PI; theta += DELTA_E)  // Elevation [0, PI]
       {
         position_vector[index].x = cos(phi) * sin(theta);
         position_vector[index].y = sin(phi) * sin(theta);
@@ -119,6 +120,18 @@ void SphereDiscretization::make_sphere_poses(const octomap::point3d& origin, dou
         index++;
       }
     }
+    double phi = 0;
+    double theta = M_PI;
+    position_vector[index].x = cos(phi) * sin(theta);
+    position_vector[index].y = sin(phi) * sin(theta);
+    position_vector[index].z = cos(theta);
+
+    tf2::Quaternion quat;
+    quat.setRPY(0, ((M_PI / 2) + theta), phi);
+    // quat=quat*quat2;
+    quat.normalize();
+    quaternion[index] = quat;
+
   }
   pose_Col.reserve( MAX_INDEX );
   pose_Col.clear();
