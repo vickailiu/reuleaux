@@ -157,9 +157,12 @@ int main(int argc, char **argv)
     MultiMapPtr pose_col_filter;
     VectorOfVectors ik_solutions;
     ik_solutions.reserve( pose_col.size() );
+    int count = 0;
 
     for (MultiVector::iterator it = pose_col.begin(); it != pose_col.end(); ++it)
     {
+      cout << count << " of " << pose_col.size();
+
       static std::vector< double > joints(6);
       int solns;
       if (k.isIKSuccess(it->first, joints, solns))
@@ -168,7 +171,11 @@ int main(int argc, char **argv)
         ik_solutions.push_back(joints);
         // cout<<it->first[0]<<" "<<it->first[1]<<" "<<it->first[2]<<" "<<it->first[3]<<" "<<it->first[4]<<"
         // "<<it->first[5]<<" "<<it->first[6]<<endl;
+
+        cout << " success!";
       }
+      count++;
+      cout << endl;
     }
 
     ROS_INFO("Total number of reachable poses: %lu", pose_col_filter.size());

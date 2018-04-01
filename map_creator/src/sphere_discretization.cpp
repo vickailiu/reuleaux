@@ -121,7 +121,7 @@ void SphereDiscretization::make_sphere_poses(const octomap::point3d& origin, dou
       }
     }
     double phi = 0;
-    double theta = M_PI;
+    double theta = M_PI - M_PI/50.;
     position_vector[index].x = cos(phi) * sin(theta);
     position_vector[index].y = sin(phi) * sin(theta);
     position_vector[index].z = cos(theta);
