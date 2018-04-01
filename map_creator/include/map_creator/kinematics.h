@@ -5,7 +5,12 @@
 #define IK_VERSION 61
 //#include "ikfast_ur3.cpp"
 //#include "abb_irb2400_manipulator_ikfast_solver.cpp"
-#include "ikfast_ur3_finger.cpp"
+//#include "ikfast_ur3_finger.cpp"
+//#include "ikfast_ur3_joint_limited.cpp"
+
+//TODO: MX:
+// create a new header: joint_limit.h and define joint limit in the header
+// include the header here.
 
 
 #include <stdio.h>

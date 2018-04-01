@@ -186,6 +186,23 @@ bool Kinematics::isIKSuccess(const std::vector< double >& pose, std::vector< dou
   else
   {
     // cout<<"Found ik solutions: "<< num_of_solutions<<endl;
+
+    int actual_num_of_sol = 0;
+    for (int i = 0; i < num_of_solutions; i++)
+    {
+      std::vector< double > sol_joints;
+      sol_joints.resize(num_of_joints);
+      const IkSolutionBase< IKREAL_TYPE >& sol = solutions.GetSolution(i);
+      sol.GetSolution(&sol_joints[0], NULL);
+
+      bool within_limit = true;
+      //TODO:MX add joint checking here...
+
+      if (within_limit) actual_num_of_sol++;
+    }
+    if (actual_num_of_sol == 0) return false;
+    num_of_solutions = actual_num_of_sol;
+
     const IkSolutionBase< IKREAL_TYPE >& sol = solutions.GetSolution(0);
     int this_sol_free_params = (int)sol.GetFree().size();
     if( this_sol_free_params <= 0){
