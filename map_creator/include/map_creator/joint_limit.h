@@ -1,0 +1,13 @@
+#define BASE_LOWER     -135*3.14/180
+#define BASE_UPPER       45*3.14/180
+#define SHOULDER_LOWER -190*3.14/180
+#define SHOULDER_UPPER  -50*3.14/180
+#define ELBOW_LOWER    -140*3.14/180
+#define ELBOW_UPPER      -5*3.14/180
+#define WRIST_1_LOWER  -270*3.14/180
+#define WRIST_1_UPPER     0*3.14/180
+#define WRIST_2_LOWER  -180*3.14/180
+#define WRIST_2_UPPER     0*3.14/180
+#define WRIST_3_LOWER   150*3.14/180
+#define WRIST_3_UPPER   450*3.14/180
+
