@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     // The center of every voxels are stored in a vector
 
     sphere_discretization::SphereDiscretization sd;
-    float r = 1;
+    float r = 1.5; //---- version 1 ----//  old: 1
     octomap::point3d origin = octomap::point3d(0, 0, 0);  // This point will be the base of the robot
     octomap::OcTree *tree = sd.generateBoxTree(origin, r, resolution);
     std::vector< octomap::point3d > new_data;
@@ -103,11 +103,15 @@ int main(int argc, char **argv)
     int sphere_count = 0;
     for (octomap::OcTree::leaf_iterator it = tree->begin_leafs(max_depth), end = tree->end_leafs(); it != end; ++it)
     {
+//      if (it.getZ() < -0.2)
+//        sphere_count++;
       sphere_count++;
     }
     new_data.reserve(sphere_count);
     for (octomap::OcTree::leaf_iterator it = tree->begin_leafs(max_depth), end = tree->end_leafs(); it != end; ++it)
     {
+//      if (it.getZ() < -0.2)
+//        new_data.push_back(it.getCoordinate());
       new_data.push_back(it.getCoordinate());
     }
 
@@ -161,7 +165,7 @@ int main(int argc, char **argv)
 
     for (MultiVector::iterator it = pose_col.begin(); it != pose_col.end(); ++it)
     {
-      cout << count << " of " << pose_col.size();
+      //cout << count << " of " << pose_col.size();
 
       static std::vector< double > joints(6);
       int solns;
@@ -172,10 +176,10 @@ int main(int argc, char **argv)
         // cout<<it->first[0]<<" "<<it->first[1]<<" "<<it->first[2]<<" "<<it->first[3]<<" "<<it->first[4]<<"
         // "<<it->first[5]<<" "<<it->first[6]<<endl;
 
-        cout << " success!";
+        //cout << " success!";
       }
       count++;
-      cout << endl;
+      //cout << endl;
     }
 
     ROS_INFO("Total number of reachable poses: %lu", pose_col_filter.size());
@@ -192,10 +196,17 @@ int main(int argc, char **argv)
     {
       const std::vector<double>* sphere_coord    = it->first;
       //const std::vector<double>* point_on_sphere = it->second;
-
+    //////////////////////////////////////////////////////////////////////for reachability emma
       // Reachability Index D=R/N*100;
+//      float a = float(pose_col_filter.count(sphere_coord)) / (pose_col.size() / new_data.size()) * 100;
+//      float d;
+//      if (a == 100) d = 1;
+//      else d = 0;
+//      sphere_color.insert( std::make_pair(it->first, double(d)));
+
       float d = float(pose_col_filter.count(sphere_coord)) / (pose_col.size() / new_data.size()) * 100;
       sphere_color.insert( std::make_pair(it->first, double(d)));
+
     }
 
     ROS_INFO("No of spheres reachable: %lu", sphere_color.size());

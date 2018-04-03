@@ -40,17 +40,20 @@ void ReachMapVisual::setMessage(const map_creator::WorkSpace::ConstPtr& msg, boo
     {
       low_SphereSize = 0;
       up_SphereSize = msg->WsSpheres.size();
+      //up_SphereSize = 1;
       break;
     }
     case 1:
     {
       low_SphereSize = 0;
       up_SphereSize = msg->WsSpheres.size() / 2;
+      //up_SphereSize = msg->WsSpheres.size() / 3;
       break;
     }
     case 2:
     {
       low_SphereSize = msg->WsSpheres.size() / 2;
+      //low_SphereSize = msg->WsSpheres.size() * 3 / 4;
       up_SphereSize = msg->WsSpheres.size();
       break;
     }
@@ -181,11 +184,19 @@ void ReachMapVisual::setColorSphere(float r, float g, float b, float a)
     sphere_[i]->setColor(r, g, b, a);
   }
 }
-
+//////////////////////////////////////////////////////for reachability emma
 void ReachMapVisual::setColorSpherebyRI(float alpha)
 {
   for (int i = 0; i < sphere_.size(); ++i)
   {
+//      if (colorRI_[i] == 1)
+//      {
+//        sphere_[i]->setColor(0, 0, 255, alpha);
+//      }
+//      else
+//      {
+//        sphere_[i]->setColor(255, 0, 0, alpha);
+//      }
     if (colorRI_[i] >= 90)
     {
       sphere_[i]->setColor(0, 0, 255, alpha);

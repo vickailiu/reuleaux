@@ -3,16 +3,10 @@
 #define IKFAST_NO_MAIN
 
 #define IK_VERSION 61
-//#include "ikfast_ur3.cpp"
-//#include "abb_irb2400_manipulator_ikfast_solver.cpp"
-//#include "ikfast_ur3_finger.cpp"
-//#include "ikfast_ur3_joint_limited.cpp"
 
-//TODO: MX:
-// create a new header: joint_limit.h and define joint limit in the header
-// include the header here.
+#include "joint_limit.h"
 
-
+#include "ikfast_new_tool0.cpp"
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
@@ -43,14 +37,10 @@ public:
 
   bool isIKSuccess(const std::vector<double> &pose, std::vector<double> &joints, int& numOfSolns);
 
-
-
   const std::string getRobotName();
 
   bool isIkSuccesswithTransformedBase(const geometry_msgs::Pose& base_pose, const geometry_msgs::Pose& grasp_pose, std::vector<double>& joint_soln,
                                       int& numOfSolns);
-
-
 };
 }
 

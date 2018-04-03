@@ -195,8 +195,20 @@ bool Kinematics::isIKSuccess(const std::vector< double >& pose, std::vector< dou
       const IkSolutionBase< IKREAL_TYPE >& sol = solutions.GetSolution(i);
       sol.GetSolution(&sol_joints[0], NULL);
 
-      bool within_limit = true;
       //TODO:MX add joint checking here...
+      //sol_joints[5] > WRIST_3_LOWER  && sol_joints[5] < WRIST_3_UPPER
+      //*180/3.14
+
+      bool within_limit;
+      if (sol_joints[0] > BASE_LOWER && sol_joints[0] < BASE_UPPER &&
+          sol_joints[1] > SHOULDER_LOWER && sol_joints[1] < SHOULDER_UPPER &&
+          sol_joints[2] > ELBOW_LOWER && sol_joints[2] < ELBOW_UPPER &&
+          sol_joints[3] > WRIST_1_LOWER  && sol_joints[3] < WRIST_1_UPPER &&
+          sol_joints[4] > WRIST_2_LOWER  && sol_joints[4] < WRIST_2_UPPER)
+      {
+        within_limit = true;
+      }
+      else within_limit = false;
 
       if (within_limit) actual_num_of_sol++;
     }
@@ -216,7 +228,7 @@ bool Kinematics::isIKSuccess(const std::vector< double >& pose, std::vector< dou
     return true;
   }
 #else
-  if (!b2success)
+  if (!b2Success)//b2success
   {
     return false;
   }
@@ -295,9 +307,4 @@ bool Kinematics::isIkSuccesswithTransformedBase(const geometry_msgs::Pose& base_
   else
     return false;
 }
-
-
-
-
-
 };

@@ -10,9 +10,9 @@ octomap::OcTree* SphereDiscretization::generateSphereTree(const octomap::point3d
   octomap::point3d point_on_surface = origin;
 
   point_on_surface.x() += radius;
-  for (int i = 0; i < 360; i++)
+  for (int i = 0; i < 360; i++) //360
   {
-    for (int j = 0; j < 360; j++)
+    for (int j = 0; j < 360; j++) //360
     {
       if (!tree->insertRay(origin, origin + point_on_surface))
       {
@@ -54,11 +54,11 @@ octomap::OcTree* SphereDiscretization::generateBoxTree(const octomap::point3d& o
 {
   octomap::OcTree* tree = new octomap::OcTree(resolution / 2);
   octomap::Pointcloud p;
-  for (float x = origin.x() - diameter * 1.5; x <= origin.x() + diameter * 1.5; x += resolution)
+  for (float x = origin.x() - diameter * 1.5; x <= origin.x() + diameter * 1.5; x += resolution) //*1.5;
   {
-    for (float y = origin.y() - diameter * 1.5; y <= origin.y() + diameter * 1.5; y += resolution)
+    for (float y = origin.y() - diameter * 1.5; y <= origin.y() + diameter * 1.5; y += resolution) //*1.5;
     {
-      for (float z = origin.z(); z <= origin.z() + diameter * 1.5; z += resolution)
+      for (float z = origin.z(); z <= origin.z() + diameter * 1.5; z += resolution) //*1.5; <= origin.z() + diameter * 1.0
       {
         // tree ->insertRay(origin, point3d(x,y,z));
         octomap::point3d point;
@@ -69,9 +69,8 @@ octomap::OcTree* SphereDiscretization::generateBoxTree(const octomap::point3d& o
       }
     }
   }
-
   return tree;
-};
+}
 
 octomap::Pointcloud SphereDiscretization::make_sphere_points(const octomap::point3d& origin, double r)
 {
@@ -101,6 +100,7 @@ void SphereDiscretization::make_sphere_poses(const octomap::point3d& origin, dou
   static std::vector<tf2::Quaternion> quaternion(MAX_INDEX);
   static bool initialized = false;
 
+  ////////////////////////////////////////////////////for reachability emma
   if( !initialized ){
     initialized=true;
     unsigned index = 0;
@@ -131,7 +131,6 @@ void SphereDiscretization::make_sphere_poses(const octomap::point3d& origin, dou
     // quat=quat*quat2;
     quat.normalize();
     quaternion[index] = quat;
-
   }
   pose_Col.reserve( MAX_INDEX );
   pose_Col.clear();
@@ -499,17 +498,15 @@ void SphereDiscretization::findOptimalPosebyPCA(const std::vector< geometry_msgs
 
   int i = test.maxCoeff(&idx);
   Eigen::Vector4d vector = eig.eigenvectors().col(idx).real();
-  tf2::Quaternion final_base_quat(vector[0], vector[0], vector[0], vector[0]);
-  final_base_quat.normalize();
 
   final_base_pose.position.x =0;
   final_base_pose.position.y =0;
   final_base_pose.position.z =0;
 
-  final_base_pose.orientation.x = final_base_quat[0];
-  final_base_pose.orientation.y = final_base_quat[1];
-  final_base_pose.orientation.z = final_base_quat[2];
-  final_base_pose.orientation.w =final_base_quat[3];
+  final_base_pose.orientation.x = vector[0];
+  final_base_pose.orientation.y = vector[1];
+  final_base_pose.orientation.z = vector[2];
+  final_base_pose.orientation.w = vector[3];
 }
 
 bool SphereDiscretization::areQuaternionClose(const tf2::Quaternion& q1, const tf2::Quaternion& q2)
